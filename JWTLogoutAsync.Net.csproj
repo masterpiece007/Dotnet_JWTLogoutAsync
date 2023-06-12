@@ -1,15 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
+	<PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Title>JWTLogoutAsync.Net</Title>
+	<Authors>Quadri Ajagbe</Authors>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Description>With only 3 lines of code, this package seeks to help you manage your jwt logout process smoothly.
+you can't entrust the client-side with the logout task on your application, because deleting the saved jwt in the browser local storage is not sufficient/efficient,
+as such jwt can be copied and used for authentication on another computer or browser before it expires.
+This package works with your custom JWT implementation as well as with ASP.NET Identity.</Description>
+	<PackageProjectUrl>https://github.com/masterpiece007/Dotnet_JWTLogoutAsync</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/masterpiece007/Dotnet_JWTLogoutAsync</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>async;jwtasync;jwt;auth;logout;jwtlogout.net;dotnet.logout;.net_logout;.netlogout;logout.net;dotnetlogout;authlogout;auth.logout</PackageTags>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<FileVersion>1.0.0.0</FileVersion>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="LiteDB.Async" Version="0.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

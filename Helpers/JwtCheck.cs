@@ -39,7 +39,8 @@ namespace JWTLogoutAsync.Net.Helpers
             {
                 IsLoggedOut = false,
                 Jwt = jwt,
-                ExpiryTime = jwtExpiry
+                ExpiryTime = jwtExpiry,
+                Username = FetchJwtUsername(jwt)
             };
 
             var rowsInserted = await collection.InsertAsync(newJwt);
@@ -141,6 +142,26 @@ namespace JWTLogoutAsync.Net.Helpers
             db.Dispose();
             return true;
         }
+        public async Task<bool> HasValidSession(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                return false;
+            var now = DateTime.Now;
+            var collection = db.GetCollection<TokenStore>();
+            var invalidJwts = await collection.Query()
+                .Where(a =>
+                    a.Username.ToLower() == username.ToLower() &&
+                    (a.IsLoggedOut == false || now < DateTime.Parse(a.ExpiryTime))).ToListAsync();
+
+            if (invalidJwts.Count > 0)
+            {
+                var rowsAffected = await collection.DeleteManyAsync(a => now > DateTime.Parse(a.ExpiryTime));
+                db.Dispose();
+                return false;
+            }
+            db.Dispose();
+            return true;
+        }
         internal static JwtDto FetchJwtAndExpiry(HttpContext httpContext)
         {
             try
@@ -179,6 +200,25 @@ namespace JWTLogoutAsync.Net.Helpers
                 return new DateTime(1970, 1, 1, 0, 0, 0, 0)
                     .AddSeconds(double.Parse(expiryTime))
                     .ToString("MM/dd/yyyy HH:mm:ss");
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        internal static string FetchJwtUsername(string jwt)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(jwt))
+                    return null;
+
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(jwt);
+                var tokenS = jsonToken as JwtSecurityToken;
+
+                var username = tokenS.Claims.FirstOrDefault(claim => claim.Type.ToLower() == "username")?.Value;
+                return username;
             }
             catch (Exception ex)
             {
