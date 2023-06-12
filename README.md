@@ -26,12 +26,12 @@ You can clone this repo and reference it in your project.
 Install via .NET CLI
 
 ```bash
-dotnet add package JWTLogoutAsync.Net --version 1.0.0
+dotnet add package JWTLogoutAsync.Net --version 1.0.1
 ```
 Install via Package Manager
 
 ```bash
-Install-Package JWTLogoutAsync.Net -Version 1.0.0
+Install-Package JWTLogoutAsync.Net -Version 1.0.1
 ```
 ## Usage
 To enable JWTLogout to listen for requests, use the middleware provided by JWTLogout.  
